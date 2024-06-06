@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onMounted, watch } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { db } from './data/guitars';
 import GuitarCard from './components/GuitarCard.vue';
 import Header from './components/Header.vue';
@@ -9,13 +9,17 @@ const guitars = ref([]);
 const cart = ref([]);
 const guitar = ref({});
 
+watch(cart, () => {
+  saveCartLocalStorage();
+}, { deep: true });
+
 onMounted(() => {
   guitars.value = db;
   guitar.value = db[3];
 
   const cartLocalStorage = localStorage.getItem('cart');
 
-  if (cartLocalStorage){
+  if (cartLocalStorage) {
     cart.value = JSON.parse(cartLocalStorage);
   }
 });
